@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mindset_level2_project/core/app_themes.dart';
+import 'package:mindset_level2_project/core/widgets/custom_text_widget.dart';
+import 'package:mindset_level2_project/features/authentication/presentation/cubit/login_cubit.dart';
 import 'package:mindset_level2_project/features/authentication/presentation/cubit/register_cubit.dart';
-import 'package:mindset_level2_project/features/authentication/presentation/pages/login_page.dart';
-import 'package:mindset_level2_project/features/authentication/presentation/widgets/custom_elevated_button.dart';
-import 'package:mindset_level2_project/features/authentication/presentation/widgets/custom_text_form_field.dart';
+import 'package:mindset_level2_project/features/authentication/presentation/pages/register_page.dart';
+import 'package:mindset_level2_project/core/widgets/custom_elevated_button.dart';
+import 'package:mindset_level2_project/core/widgets/custom_text_form_field.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -15,6 +18,11 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
   bool isObscure = true;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -22,258 +30,208 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
+    userNameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: const Color.fromARGB(255, 15, 23, 28)),
-      backgroundColor: const Color.fromARGB(255, 15, 23, 28),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: BlocProvider(
-          create: (context) => RegisterCubit(),
-          child: BlocConsumer<RegisterCubit, RegisterState>(
-            listener: (context, state) {
-              if (state is RegisterSuccess) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              } else if (state is RegisterFailure) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
-              }
-            },
-            builder: (context, state) {
-              return Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  spacing: 20,
-                  children: [
-                    Icon(
-                      Icons.app_registration,
-                      size: 100,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'Welcome to MyApp',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+        backgroundColor: AppThemes.primaryColor,
+        title: CustomTextWidget(
+          fontSize: 28,
+          data: 'Create new account',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      backgroundColor: AppThemes.primaryColor,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: BlocProvider(
+            create: (context) => RegisterCubit(),
+            child: BlocConsumer<RegisterCubit, RegisterState>(
+              listener: (context, state) {
+                if (state is RegisterSuccess) {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => HomePage()),
+                  // );
+                } else if (state is RegisterFailure) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                }
+              },
+              builder: (context, state) {
+                return Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    spacing: 5,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadiusGeometry.circular(100),
+                        child: Image.asset(
+                          'assets/logo.png',
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Sign up to continue',
-                      style: TextStyle(color: Colors.white60, fontSize: 18),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        'Email',
-                        style: TextStyle(
+                      SizedBox(
+                        width: double.infinity,
+                        child: CustomTextWidget(
+                          data: 'Full Name',
                           color: const Color.fromARGB(239, 255, 255, 255),
-                          fontSize: 20,
+                          fontSize: 18,
                         ),
                       ),
-                    ),
-                    // TextFormField for Email
-                    CustomTextFormField(
-                      controller: emailController,
-                      hintText: 'Enter your email',
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        if (!RegExp(r'\w+@\w+.com').hasMatch(value)) {
-                          return 'email must have @ and .com';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        'Password',
-                        style: TextStyle(
-                          color: Color.fromARGB(239, 255, 255, 255),
-                          fontSize: 20,
+                      // TextFormField for Email
+                      CustomTextFormField(
+                        controller: userNameController,
+                        hintText: 'Enter your name',
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: CustomTextWidget(
+                          data: 'Email',
+                          color: const Color.fromARGB(239, 255, 255, 255),
+                          fontSize: 18,
                         ),
                       ),
-                    ),
-                    // TextFormField for Password
-                    BlocBuilder<RegisterCubit, RegisterState>(
-                      builder: (context, state) {
-                        return CustomTextFormField(
-                          icon: isObscure
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          toggleObscure: () {
-                            isObscure = !isObscure;
-                            context.read<RegisterCubit>().toggleObscure();
-                          },
-                          isObscure: isObscure,
-                          controller: passwordController,
-                          hintText: 'Enter your password',
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters long';
-                            }
-                            return null;
-                          },
-                        );
-                      },
-                    ),
-                    // Sign Up Button
-                    BlocBuilder<RegisterCubit, RegisterState>(
-                      builder: (context, state) {
-                        return CustomElevatedButton(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            40,
-                            140,
-                            235,
-                          ),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              context.read<RegisterCubit>().registerUser(
-                                emailController.text,
-                                passwordController.text,
-                              );
-                            }
-                          },
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: Colors.white60,
-                            thickness: 1,
-                            height: 20,
-                            radius: BorderRadius.all(Radius.circular(8)),
+                      // TextFormField for Email
+                      CustomTextFormField(
+                        controller: emailController,
+                        hintText: 'Enter your email',
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (value.contains(RegExp(r'\w+@\w+.com')) == false) {
+                            return 'email must have @ and .com';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'Password',
+                          style: TextStyle(
+                            color: Color.fromARGB(239, 255, 255, 255),
+                            fontSize: 20,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'OR',
-                            style: TextStyle(
-                              color: Colors.white60,
-                              fontSize: 18,
-                            ),
+                      ),
+                      // TextFormField for Password
+                      BlocBuilder<RegisterCubit, RegisterState>(
+                        builder: (context, state) {
+                          return CustomTextFormField(
+                            controller: passwordController,
+                            hintText: 'Enter your password',
+                            isObscure: isObscure,
+                            toggleObscure: () {
+                              context.read<RegisterCubit>().toggleObscure();
+                              isObscure = !isObscure;
+                            },
+                            icon: isObscure
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              if (value.length < 6) {
+                                return 'Password must be at least 6 characters long';
+                              }
+                              return null;
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'Confirm password',
+                          style: TextStyle(
+                            color: Color.fromARGB(239, 255, 255, 255),
+                            fontSize: 20,
                           ),
                         ),
-                        Expanded(
-                          child: Divider(
-                            color: Colors.white60,
-                            thickness: 1,
-                            height: 20,
-                            radius: BorderRadius.all(Radius.circular(8)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Sign In with Google Button
-                    BlocBuilder<RegisterCubit, RegisterState>(
-                      builder: (context, state) {
-                        return CustomElevatedButton(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            15,
-                            23,
-                            28,
-                          ),
-                          onPressed: () async {
-                            await context
-                                .read<RegisterCubit>()
-                                .signInWithGoogle();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: SvgPicture.asset(
-                                  'icons/google.svg',
-                                  width: 24,
-                                  height: 24,
-                                ),
-                              ),
-                              if (state is RegisterLoading)
-                                CircularProgressIndicator()
-                              else
-                                Text(
-                                  'continue with Google',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'have an account?',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginPage(),
-                              ),
+                      ),
+                      // TextFormField for Password
+                      BlocBuilder<RegisterCubit, RegisterState>(
+                        builder: (context, state) {
+                          return CustomTextFormField(
+                            controller: confirmPasswordController,
+                            hintText: 'confirm your password',
+                            isObscure: isObscure,
+                            toggleObscure: () {
+                              context.read<RegisterCubit>().toggleObscure();
+                              isObscure = !isObscure;
+                            },
+                            icon: isObscure
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            validator: (value) {
+                              if (value != passwordController.text) {
+                                return 'Please confirm your password';
+                              }
+
+                              return null;
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      // Sign In Button
+                      CustomElevatedButton(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            context.read<RegisterCubit>().registerUser(
+                              emailController.text,
+                              passwordController.text,
                             );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              15,
-                              23,
-                              28,
-                            ),
-                          ),
-                          child: Text(
-                            ' Sign In',
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 26, 117, 192),
-                              fontSize: 16,
-                            ),
-                          ),
+                          }
+                        },
+                        child: CustomTextWidget(
+                          data: 'Register',
+
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppThemes.primaryColor,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
+                      ),
+                      SizedBox(height: 60),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/login');
+                        },
+                        child: CustomTextWidget(
+                          fontSize: 14,
+                          data: 'Create new account',
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
