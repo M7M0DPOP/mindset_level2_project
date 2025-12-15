@@ -206,6 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             context.read<RegisterCubit>().registerUser(
                               emailController.text,
                               passwordController.text,
+                              userNameController.text,
                             );
                           }
                         },
