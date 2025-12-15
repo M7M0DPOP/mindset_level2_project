@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
 import 'package:mindset_level2_project/core/widgets/custom_text_widget.dart';
 import 'package:mindset_level2_project/features/authentication/presentation/cubit/login_cubit.dart';
-import 'package:mindset_level2_project/features/authentication/presentation/pages/register_page.dart';
 import 'package:mindset_level2_project/core/widgets/custom_elevated_button.dart';
 import 'package:mindset_level2_project/core/widgets/custom_text_form_field.dart';
 

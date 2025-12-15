@@ -12,13 +12,14 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(RegisterInitial());
   }
 
-  registerUser(String email, String password) async {
+  registerUser(String email, String password, String name) async {
     emit(RegisterLoading());
     try {
       final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await user.user!.updateDisplayName(name);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
       emit(RegisterSuccess(userCredential: user));
