@@ -1,7 +1,7 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'register_state.dart';
 
@@ -15,8 +15,12 @@ class RegisterCubit extends Cubit<RegisterState> {
   registerUser(String email, String password) async {
     emit(RegisterLoading());
     try {
-      final user = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
       emit(RegisterSuccess(userCredential: user));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -26,21 +30,6 @@ class RegisterCubit extends Cubit<RegisterState> {
         print('The account already exists for that email.');
         emit(RegisterFailure('The account already exists for that email.'));
       }
-    } catch (e) {
-      print(e);
-      emit(RegisterFailure(e.toString()));
-    }
-  }
-  //thanks for Flutter Root youtube channel for google sign in help
-
-  Future signInWithGoogle() async {
-    emit(RegisterLoading());
-    // Trigger the authentication flow
-    try {
-      final user = await FirebaseAuth.instance.signInWithProvider(
-        GoogleAuthProvider(),
-      );
-      emit(RegisterSuccess(userCredential: user));
     } catch (e) {
       print(e);
       emit(RegisterFailure(e.toString()));

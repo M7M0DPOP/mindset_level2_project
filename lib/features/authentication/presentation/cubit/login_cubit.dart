@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -16,6 +18,8 @@ class LoginCubit extends Cubit<LoginState> {
         email: email,
         password: password,
       );
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
       emit(LoginSuccess(userCredential: user));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -26,21 +30,6 @@ class LoginCubit extends Cubit<LoginState> {
         emit(LoginFailure('Wrong password provided for that user.'));
       }
     } catch (e) {
-      emit(LoginFailure(e.toString()));
-    }
-  }
-
-  //thanks for Flutter Root youtube channel for google sign in help
-  Future signInWithGoogle() async {
-    emit(LoginLoading());
-    // Trigger the authentication flow
-    try {
-      final user = await FirebaseAuth.instance.signInWithProvider(
-        GoogleAuthProvider(),
-      );
-      emit(LoginSuccess(userCredential: user));
-    } catch (e) {
-      print(e);
       emit(LoginFailure(e.toString()));
     }
   }
