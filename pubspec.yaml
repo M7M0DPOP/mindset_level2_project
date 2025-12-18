@@ -38,7 +38,9 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_svg: ^2.2.3
   firebase_auth: ^6.1.2
+  cloud_firestore: ^6.1.1
   shared_preferences: ^2.5.4
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -64,9 +66,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/onbording_img.png
-    - assets/google.svg
-    - assets/logo.png
+    - assets/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
