@@ -49,10 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             child: BlocConsumer<LoginCubit, LoginState>(
               listener: (context, state) {
                 if (state is LoginSuccess) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
+                  Navigator.pushNamed(context, "/home");
                 } else if (state is LoginFailure) {
                   ScaffoldMessenger.of(
                     context,

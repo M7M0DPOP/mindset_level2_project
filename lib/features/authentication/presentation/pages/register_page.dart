@@ -60,10 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: BlocConsumer<RegisterCubit, RegisterState>(
               listener: (context, state) {
                 if (state is RegisterSuccess) {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => HomePage()),
-                  // );
+                  Navigator.pushNamed(context, "/home");
                 } else if (state is RegisterFailure) {
                   ScaffoldMessenger.of(
                     context,
@@ -210,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               passwordController.text,
                               userNameController.text,
                             );
-                            Navigator.pushReplacementNamed(context, '/Home');
+                            Navigator.pushReplacementNamed(context, '/home');
                           }
                         },
                         child: CustomTextWidget(

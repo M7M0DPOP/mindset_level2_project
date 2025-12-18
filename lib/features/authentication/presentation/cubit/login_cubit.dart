@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindset_level2_project/features/authentication/data/models/current_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_state.dart';
@@ -18,9 +19,16 @@ class LoginCubit extends Cubit<LoginState> {
         email: email,
         password: password,
       );
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      emit(LoginSuccess(userCredential: user));
+
+      CurrentUser.saveUserState(
+        user.user!.uid,
+        user.user!.email ?? "",
+        user.user!.displayName ?? '',
+        user.user!.photoURL ?? '',
+      );
+      CurrentUser.initSharedPref();
+
+      emit(LoginSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -36,6 +44,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> signout() async {
     emit(LoginLoading());
+    CurrentUser.logout();
     await FirebaseAuth.instance.signOut();
     emit(LoginInitial());
   }
