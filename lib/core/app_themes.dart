@@ -6,4 +6,10 @@ class AppThemes {
   static final secondaryColor = Color.fromARGB(255, 48, 232, 122);
   static final thireedColor = Color.fromARGB(255, 41, 56, 46);
   static final textColor = Colors.white;
+  static final gray = Colors.grey;
+  static final red = Colors.red;
+  static final orange = Colors.orange;
+
+  static final lightGreen = Color(0xFF9EB8A8);
+
 }
