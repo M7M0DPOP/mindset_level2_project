@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mindset_level2_project/features/authentication/data/models/current_user.dart';
 import '../../../../core/app_themes.dart';
 import 'login_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   Future<String?> _getUserEmail() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userEmail');
+    return CurrentUser.email;
+  }
+
+  String? _getUserId() {
+    return CurrentUser.userId;
+  }
+
+  String? _getUserName() {
+    return CurrentUser.userName;
+  }
+
+  String? _getUserImage() {
+    return CurrentUser.userImage;
   }
 
   Future<void> _logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    await prefs.remove('userEmail');
+    CurrentUser.logout();
 
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -29,10 +39,7 @@ class ProfilePage extends StatelessWidget {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           backgroundColor: const Color(0xFF121714),
-          title: Text(
-            'Logout',
-            style: TextStyle(color: AppThemes.textColor),
-          ),
+          title: Text('Logout', style: TextStyle(color: AppThemes.textColor)),
           content: Text(
             'Are you sure you want to logout?',
             style: TextStyle(color: AppThemes.lightGreen),
@@ -81,10 +88,14 @@ class ProfilePage extends StatelessWidget {
                 CircleAvatar(
                   radius: 60,
                   backgroundColor: AppThemes.secondaryColor,
-                  child: Icon(
-                    Icons.person,
-                    size: 60,
-                    color: AppThemes.textColor,
+                  child: CachedNetworkImage(
+                    imageUrl: _getUserImage() ?? "",
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(
+                      Icons.person,
+                      size: 60,
+                      color: AppThemes.textColor,
+                    ),
                   ),
                 ),
 
@@ -103,6 +114,20 @@ class ProfilePage extends StatelessWidget {
 
                 Text(
                   email,
+                  style: const TextStyle(
+                    color: Color(0xFF9EB8A8),
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  _getUserName() ?? "Example",
+                  style: const TextStyle(
+                    color: Color(0xFF9EB8A8),
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  _getUserId() ?? "user id",
                   style: const TextStyle(
                     color: Color(0xFF9EB8A8),
                     fontSize: 16,
