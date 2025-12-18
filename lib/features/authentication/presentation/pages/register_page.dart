@@ -9,6 +9,8 @@ import 'package:mindset_level2_project/features/authentication/presentation/page
 import 'package:mindset_level2_project/core/widgets/custom_elevated_button.dart';
 import 'package:mindset_level2_project/core/widgets/custom_text_form_field.dart';
 
+import 'home_page.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -208,6 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               passwordController.text,
                               userNameController.text,
                             );
+                            Navigator.pushReplacementNamed(context, '/Home');
                           }
                         },
                         child: CustomTextWidget(

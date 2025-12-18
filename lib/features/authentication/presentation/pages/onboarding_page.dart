@@ -43,7 +43,7 @@ class OnboardingPage extends StatelessWidget {
                 height: 537,
               ),
             ),
-            SizedBox(width: double.infinity, height: 100),
+            SizedBox(width: double.infinity, height: 80),
             CustomElevatedButton(
               onPressed: () =>
                   Navigator.pushReplacementNamed(context, '/login'),
