@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class TaskRepository {
   Stream<List<Map<String, dynamic>>> getTasks();
