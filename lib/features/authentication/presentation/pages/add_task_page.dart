@@ -103,6 +103,7 @@ class _AddTaskState extends State<AddTask> {
               controller: descriptionController,
               hintText: "Description",
               minLines: 4,
+              maxLines: 6,
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Description is required';
