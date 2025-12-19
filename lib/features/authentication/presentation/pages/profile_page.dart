@@ -4,9 +4,14 @@ import '../../../../core/app_themes.dart';
 import 'login_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   Future<String?> _getUserEmail() async {
     return CurrentUser.email;
   }
@@ -31,6 +36,12 @@ class ProfilePage extends StatelessWidget {
       MaterialPageRoute(builder: (context) => LoginPage()),
       (route) => false,
     );
+  }
+
+  @override
+  void initState() {
+    CurrentUser.initSharedPref();
+    super.initState();
   }
 
   void _showLogoutDialog(BuildContext context) {

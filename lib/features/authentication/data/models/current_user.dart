@@ -27,6 +27,7 @@ class CurrentUser {
     email = null;
     userId = null;
     userName = null;
+    userImage = null;
   }
 
   static bool get isLoggedIn => _prefs.getBool('isLoggedIn') ?? false;
