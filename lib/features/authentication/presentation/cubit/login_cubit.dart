@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,32 +19,26 @@ class LoginCubit extends Cubit<LoginState> {
         password: password,
       );
 
-      CurrentUser.saveUserState(
+      await CurrentUser.saveUserState(
         user.user!.uid,
         user.user!.email ?? "",
         user.user!.displayName ?? '',
         user.user!.photoURL ?? '',
       );
-      CurrentUser.initSharedPref();
+      await CurrentUser.initSharedPref();
 
-      emit(LoginSuccess());
+      if (!isClosed) emit(LoginSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
-        emit(LoginFailure('No user found for that email.'));
+        if (!isClosed) emit(LoginFailure('No user found for that email.'));
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
-        emit(LoginFailure('Wrong password provided for that user.'));
+        if (!isClosed)
+          emit(LoginFailure('Wrong password provided for that user.'));
       }
     } catch (e) {
-      emit(LoginFailure(e.toString()));
+      if (!isClosed) emit(LoginFailure(e.toString()));
     }
-  }
-
-  Future<void> signout() async {
-    emit(LoginLoading());
-    CurrentUser.logout();
-    await FirebaseAuth.instance.signOut();
-    emit(LoginInitial());
   }
 }
