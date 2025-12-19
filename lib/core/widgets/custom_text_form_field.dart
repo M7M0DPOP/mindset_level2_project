@@ -8,6 +8,8 @@ class CustomTextFormField extends StatefulWidget {
   final String? Function(String) validator;
   final void Function()? toggleObscure;
   final int? minLines;
+  final int? maxLines;
+
   IconData? icon;
   CustomTextFormField({
     super.key,
@@ -18,6 +20,7 @@ class CustomTextFormField extends StatefulWidget {
     this.toggleObscure,
     this.icon,
     this.minLines = 1,
+    this.maxLines = 1,
   });
 
   @override
@@ -53,7 +56,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             validator: (value) => widget.validator(value!),
           )
         : TextFormField(
-            maxLines: 20,
+            maxLines: widget.maxLines,
             minLines: widget.minLines,
             onTapOutside: (_) => FocusScope.of(context).unfocus(),
             style: TextStyle(color: Colors.white),
