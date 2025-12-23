@@ -30,56 +30,32 @@ class CustomTextFormField extends StatefulWidget {
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
-    return widget.isObscure
-        ? TextFormField(
-            onTapOutside: (_) => FocusScope.of(context).unfocus(),
-            style: TextStyle(color: Colors.white),
-            obscureText: widget.isObscure,
-            controller: widget.controller,
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                onPressed: widget.toggleObscure,
-                color: Colors.white60,
-                icon: Icon(widget.icon),
-              ),
+    return TextFormField(
+      maxLines: widget.isObscure ? 1 : widget.maxLines,
+      minLines: widget.isObscure ? 1 : widget.minLines,
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
+      style: TextStyle(color: Colors.white),
+      obscureText: widget.isObscure,
+      controller: widget.controller,
+      decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppThemes.secondaryColor),
+        ),
+        suffixIcon: IconButton(
+          onPressed: widget.toggleObscure,
+          color: Colors.white60,
+          icon: Icon(widget.icon),
+        ),
 
-              hint: Text(
-                widget.hintText,
-                style: TextStyle(color: Colors.white60, fontSize: 18),
-              ),
-              fillColor: AppThemes.thireedColor,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            validator: (value) => widget.validator(value!),
-          )
-        : TextFormField(
-            maxLines: widget.maxLines,
-            minLines: widget.minLines,
-            onTapOutside: (_) => FocusScope.of(context).unfocus(),
-            style: TextStyle(color: Colors.white),
-            obscureText: widget.isObscure,
-            controller: widget.controller,
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                onPressed: widget.toggleObscure,
-                color: Colors.white60,
-                icon: Icon(widget.icon),
-              ),
-
-              hint: Text(
-                widget.hintText,
-                style: TextStyle(color: Colors.white60, fontSize: 18),
-              ),
-              fillColor: AppThemes.thireedColor,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            validator: (value) => widget.validator(value!),
-          );
+        hint: Text(
+          widget.hintText,
+          style: TextStyle(color: Colors.white60, fontSize: 18),
+        ),
+        fillColor: AppThemes.thireedColor,
+        filled: true,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      validator: (value) => widget.validator(value!),
+    );
   }
 }
