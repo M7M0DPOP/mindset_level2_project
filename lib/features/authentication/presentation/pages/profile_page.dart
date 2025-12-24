@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mindset_level2_project/features/authentication/data/models/current_user.dart';
+import 'package:mindset_level2_project/features/authentication/data/repositories/user_repo_impl.dart';
+import 'package:mindset_level2_project/features/authentication/domain/entities/user_entity.dart';
 import '../../../../core/app_themes.dart';
 import 'login_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mindset_level2_project/main.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,35 +14,31 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  UserEntity get userEntity => getIt<UserRepoImpl>().loadUser();
+
   Future<String?> _getUserEmail() async {
-    return CurrentUser.email;
+    return userEntity.email;
   }
 
   String? _getUserId() {
-    return CurrentUser.userId;
+    return userEntity.userId;
   }
 
   String? _getUserName() {
-    return CurrentUser.userName;
+    return userEntity.userName;
   }
 
   String? _getUserImage() {
-    return CurrentUser.userImage;
+    return userEntity.userImage;
   }
 
   Future<void> _logout(BuildContext context) async {
-    CurrentUser.logout();
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-      (route) => false,
-    );
+    getIt<UserRepoImpl>().clearUser();
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
   @override
   void initState() {
-    CurrentUser.initSharedPref();
     super.initState();
   }
 
