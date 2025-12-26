@@ -11,6 +11,7 @@ import 'package:mindset_level2_project/firebase_options.dart';
 import 'core/dependency_injection/injection.dart';
 import 'features/authentication/presentation/pages/onboarding_page.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final getIt = GetIt.instance;
 
@@ -23,27 +24,35 @@ Future<void> main() async {
   runApp(
     BlocProvider(
       create: (context) => sl.getTaskCubit(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: getIt<UserRepoImpl>().isUserLoggedIn() ?? false
-            ? "/home"
-            : getIt<UserRepoImpl>().isFristTime() ?? true
-            ? "/"
-            : "/login",
-        routes: {
-          "/": (context) => OnboardingPage(),
-          "/register": (context) => BlocProvider(
-            create: (context) =>
-                AuthenticationCubit(userRepo: getIt<UserRepoImpl>()),
-            child: RegisterPage(),
-          ),
-          "/login": (context) => BlocProvider(
-            create: (context) =>
-                AuthenticationCubit(userRepo: getIt<UserRepoImpl>()),
-            child: LoginPage(),
-          ),
-          "/home": (context) => HomePage(),
-        },
+      child: ScreenUtilInit(
+        designSize: const Size(390, 844),
+        builder: (_, __) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: getIt<UserRepoImpl>().isUserLoggedIn() ?? false
+              ? "/home"
+              : getIt<UserRepoImpl>().isFristTime() ?? true
+              ? "/"
+              : "/login",
+          routes: {
+            "/": (context) => OnboardingPage(),
+            "/register": (context) => BlocProvider(
+              create: (context) =>
+                  AuthenticationCubit(userRepo: getIt<UserRepoImpl>()),
+              child: RegisterPage(),
+            ),
+            "/login": (context) => BlocProvider(
+              create: (context) =>
+                  AuthenticationCubit(userRepo: getIt<UserRepoImpl>()),
+              child: LoginPage(),
+            ),
+            "/home": (context) => HomePage(),
+          },
+        ),
+        child: BlocProvider(
+          create: (context) =>
+              AuthenticationCubit(userRepo: getIt<UserRepoImpl>()),
+          child: LoginPage(),
+        ),
       ),
     ),
   );

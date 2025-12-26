@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
 
 class CustomElevatedButton extends StatefulWidget {
@@ -29,7 +30,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
       style: ElevatedButton.styleFrom(
         backgroundColor: widget.backgroundColor ?? AppThemes.secondaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(500)),
-        minimumSize: Size(widget.width, widget.height),
+        minimumSize: Size(widget.width.w, widget.height.h),
       ),
       child: widget.child,
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
 
 class CustomTextWidget extends StatelessWidget {
@@ -19,7 +20,7 @@ class CustomTextWidget extends StatelessWidget {
     return Text(
       data,
       style: TextStyle(
-        fontSize: fontSize,
+        fontSize: fontSize.sp,
         fontWeight: fontWeight,
         color: color ?? AppThemes.textColor,
       ),

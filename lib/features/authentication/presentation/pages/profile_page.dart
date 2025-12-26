@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/features/authentication/data/repositories/user_repo_impl.dart';
 import 'package:mindset_level2_project/features/authentication/domain/entities/user_entity.dart';
 import '../../../../core/app_themes.dart';
@@ -93,78 +94,78 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 CircleAvatar(
-                  radius: 60,
+                  radius: 60.r,
                   backgroundColor: AppThemes.secondaryColor,
                   child: CachedNetworkImage(
                     imageUrl: _getUserImage() ?? "",
                     placeholder: (context, url) => CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Icon(
                       Icons.person,
-                      size: 60,
+                      size: 60.w,
                       color: AppThemes.textColor,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 Text(
                   'Welcome Back!',
                   style: TextStyle(
                     color: AppThemes.textColor,
-                    fontSize: 24,
+                    fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
 
                 Text(
                   email,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color: Color(0xFF9EB8A8),
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                 ),
                 Text(
                   _getUserName() ?? "Example",
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color: Color(0xFF9EB8A8),
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                 ),
                 Text(
                   _getUserId() ?? "user id",
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color: Color(0xFF9EB8A8),
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                 ),
-                const SizedBox(height: 90),
+                 SizedBox(height: 90.h),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red.withOpacity(0.2),
                       foregroundColor: Colors.red,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding:  EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                         side: const BorderSide(color: Colors.red),
                       ),
                     ),
                     onPressed: () => _showLogoutDialog(context),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children:  [
                         Icon(Icons.logout),
-                        SizedBox(width: 8),
+                        SizedBox(width: 8.w),
                         Text(
                           'Logout',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

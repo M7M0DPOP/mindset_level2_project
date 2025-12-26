@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
 
 class CustomTextFormField extends StatefulWidget {
@@ -49,11 +50,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
         hint: Text(
           widget.hintText,
-          style: TextStyle(color: Colors.white60, fontSize: 18),
+          style: TextStyle(color: Colors.white60, fontSize: 18.sp),
         ),
         fillColor: AppThemes.thireedColor,
         filled: true,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
       ),
       validator: (value) => widget.validator(value!),
     );
