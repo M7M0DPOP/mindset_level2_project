@@ -33,7 +33,6 @@ class OnboardingPage extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
-
             ClipRRect(
               borderRadius: BorderRadiusGeometry.circular(16),
               child: Image.asset(
@@ -43,7 +42,7 @@ class OnboardingPage extends StatelessWidget {
                 height: 537.h,
               ),
             ),
-            SizedBox(width: double.infinity, height: 80.h),
+            SizedBox(width: double.infinity, height: 40.h),
             CustomElevatedButton(
               onPressed: () =>
                   Navigator.pushReplacementNamed(context, '/login'),

@@ -117,15 +117,12 @@ class _LoginFormState extends State<LoginForm> {
               color: AppThemes.primaryColor,
             ),
           ),
-          SizedBox(height: 180.h),
+          SizedBox(height: 140.h),
           TextButton(
             onPressed: () {
               Navigator.pushNamed(context, '/register');
             },
-            child: CustomTextWidget(
-              fontSize: 14,
-              data: 'Create new account',
-            ),
+            child: CustomTextWidget(fontSize: 14, data: 'Create new account'),
           ),
         ],
       ),

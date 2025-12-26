@@ -173,7 +173,7 @@ class _RegisterFormState extends State<RegisterForm> {
               color: AppThemes.primaryColor,
             ),
           ),
-          SizedBox(height: 60.h),
+          SizedBox(height: 40.h),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
