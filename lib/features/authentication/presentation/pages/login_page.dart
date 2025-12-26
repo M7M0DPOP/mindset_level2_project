@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
 import 'package:mindset_level2_project/core/widgets/custom_text_widget.dart';
 import 'package:mindset_level2_project/features/authentication/presentation/cubit/authentication_cubit.dart';
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding:  EdgeInsets.all(20.w),
             child: BlocConsumer<AuthenticationCubit, AuthenticatonState>(
               listener: (context, state) {
                 if (state is AuthenticatonSuccess) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
 import 'package:mindset_level2_project/core/widgets/custom_elevated_button.dart';
 import 'package:mindset_level2_project/core/widgets/custom_text_form_field.dart';
@@ -32,14 +33,14 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
-        spacing: 20,
+        spacing: 20.h,
         children: [
           ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(100),
+            borderRadius: BorderRadiusGeometry.circular(100.r),
             child: Image.asset(
               'assets/logo.png',
-              height: 200,
-              width: 200,
+              height: 200.h,
+              width: 200.w,
               fit: BoxFit.cover,
             ),
           ),
@@ -67,12 +68,10 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(
             width: double.infinity,
-            child: Text(
-              'Password',
-              style: TextStyle(
-                color: Color.fromARGB(239, 255, 255, 255),
-                fontSize: 20,
-              ),
+            child: CustomTextWidget(
+              data: 'Password',
+              color: Color.fromARGB(239, 255, 255, 255),
+              fontSize: 20,
             ),
           ),
           // TextFormField for Password
@@ -118,12 +117,15 @@ class _LoginFormState extends State<LoginForm> {
               color: AppThemes.primaryColor,
             ),
           ),
-          SizedBox(height: 180),
+          SizedBox(height: 180.h),
           TextButton(
             onPressed: () {
               Navigator.pushNamed(context, '/register');
             },
-            child: CustomTextWidget(fontSize: 14, data: 'Create new account'),
+            child: CustomTextWidget(
+              fontSize: 14,
+              data: 'Create new account',
+            ),
           ),
         ],
       ),

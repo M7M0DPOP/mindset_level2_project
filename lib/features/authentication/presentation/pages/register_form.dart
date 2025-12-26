@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
 import 'package:mindset_level2_project/core/widgets/custom_elevated_button.dart';
 import 'package:mindset_level2_project/core/widgets/custom_text_form_field.dart';
@@ -36,14 +37,14 @@ class _RegisterFormState extends State<RegisterForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
-        spacing: 5,
+        spacing: 5.h,
         children: [
           ClipRRect(
             borderRadius: BorderRadiusGeometry.circular(100),
             child: Image.asset(
               'assets/logo.png',
-              height: 200,
-              width: 200,
+              height: 200.h,
+              width: 200.w,
               fit: BoxFit.cover,
             ),
           ),
@@ -91,12 +92,10 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
           SizedBox(
             width: double.infinity,
-            child: Text(
-              'Password',
-              style: TextStyle(
-                color: Color.fromARGB(239, 255, 255, 255),
-                fontSize: 20,
-              ),
+            child: CustomTextWidget(
+              data: 'Password',
+              color: Color.fromARGB(239, 255, 255, 255),
+              fontSize: 20,
             ),
           ),
           // TextFormField for Password
@@ -125,12 +124,10 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
           SizedBox(
             width: double.infinity,
-            child: Text(
-              'Confirm password',
-              style: TextStyle(
-                color: Color.fromARGB(239, 255, 255, 255),
-                fontSize: 20,
-              ),
+            child: CustomTextWidget(
+              data: 'Confirm password',
+              color: Color.fromARGB(239, 255, 255, 255),
+              fontSize: 20,
             ),
           ),
           // TextFormField for Password
@@ -155,7 +152,7 @@ class _RegisterFormState extends State<RegisterForm> {
               );
             },
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 20.h),
           // Sign In Button
           CustomElevatedButton(
             onPressed: () {
@@ -176,7 +173,7 @@ class _RegisterFormState extends State<RegisterForm> {
               color: AppThemes.primaryColor,
             ),
           ),
-          SizedBox(height: 60),
+          SizedBox(height: 60.h),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
