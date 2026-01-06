@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
-import 'package:mindset_level2_project/features/task_management/presentation/pages/task%20_details_page.dart';
-import '../cubit/task_cubit.dart';
-import 'add_task_page.dart' as add_task_page;
+import 'package:mindset_level2_project/core/widgets/custom_text_widget.dart';
+import 'package:mindset_level2_project/features/task_management/presentation/cubit/task_manage_cubit.dart';
+import 'package:mindset_level2_project/features/task_management/presentation/pages/task_details_page.dart';
+import 'add_task_page.dart';
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,10 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const TasksPage(),
-    const ProfilePage(),
-  ];
+  final List<Widget> _pages = [const TasksPage(), const ProfilePage()];
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +27,15 @@ class _HomePageState extends State<HomePage> {
       body: _pages[_selectedIndex],
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => add_task_page.AddTask()),
-          );
-        },
-        backgroundColor: AppThemes.secondaryColor,
-        child: Icon(Icons.add),
-      )
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddTask()),
+                );
+              },
+              backgroundColor: AppThemes.secondaryColor,
+              child: Icon(Icons.add),
+            )
           : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -49,14 +48,8 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: AppThemes.textColor,
         unselectedItemColor: AppThemes.lightGreen,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
@@ -76,15 +69,16 @@ class TasksPage extends StatelessWidget {
           automaticallyImplyLeading: false,
           backgroundColor: AppThemes.primaryColor,
           centerTitle: true,
-          title: Text(
-            'Taskly',
-            style: TextStyle(color: AppThemes.textColor, fontSize: 25),
+          title: CustomTextWidget(
+            data: 'Taskly',
+            color: AppThemes.textColor,
+            fontSize: 25,
           ),
           elevation: 0,
           bottom: TabBar(
             dividerColor: Colors.transparent,
             indicatorColor: AppThemes.textColor,
-            indicatorWeight: 3,
+            indicatorWeight: 3.h,
             labelColor: AppThemes.textColor,
             indicatorSize: TabBarIndicatorSize.label,
             unselectedLabelColor: AppThemes.lightGreen,
@@ -108,7 +102,7 @@ class TasksPage extends StatelessWidget {
 
   Widget _buildTasks(BuildContext context, {required String filter}) {
     return StreamBuilder<List<Map<String, dynamic>>>(
-      stream: context.read<TaskCubit>().tasksStream,
+      stream: context.read<TaskManageCubit>().tasksStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -116,18 +110,20 @@ class TasksPage extends StatelessWidget {
 
         if (snapshot.hasError) {
           return Center(
-            child: Text(
-              'Error: ${snapshot.error}',
-              style: TextStyle(color: AppThemes.red),
+            child: CustomTextWidget(
+              data: 'Error: ${snapshot.error}',
+              color: AppThemes.red,
+              fontSize: 16,
             ),
           );
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
-            child: Text(
-              'No Tasks',
-              style: TextStyle(color: AppThemes.textColor),
+            child: CustomTextWidget(
+              data: 'No Tasks',
+              color: AppThemes.textColor,
+              fontSize: 16,
             ),
           );
         }
@@ -141,9 +137,10 @@ class TasksPage extends StatelessWidget {
 
         if (tasks.isEmpty) {
           return Center(
-            child: Text(
-              'No ${filter == 'all' ? '' : filter} tasks',
-              style: TextStyle(color: AppThemes.textColor),
+            child: CustomTextWidget(
+              data: 'No ${filter == 'all' ? '' : filter} tasks',
+              color: AppThemes.textColor,
+              fontSize: 16,
             ),
           );
         }
@@ -154,7 +151,7 @@ class TasksPage extends StatelessWidget {
             final task = tasks[index];
             return Card(
               color: AppThemes.primaryColor,
-              margin: const EdgeInsets.all(8),
+              margin: EdgeInsets.all(8.h),
               child: ListTile(
                 onTap: () {
                   Navigator.push(
@@ -165,10 +162,10 @@ class TasksPage extends StatelessWidget {
                   );
                 },
 
-
-                title: Text(
-                  task['taskTitle'] ?? 'No Title',
-                  style:  TextStyle(color: AppThemes.textColor),
+                title: CustomTextWidget(
+                  data: task['taskTitle'] ?? 'No Title',
+                  color: AppThemes.textColor,
+                  fontSize: 16,
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,25 +176,25 @@ class TasksPage extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Priority: ${task['priority'] ?? 'Low'}',
-                      style: TextStyle(
-                        color: _getPriorityColor(task['priority']),
-                        fontSize: 12,
-                      ),
+                    SizedBox(height: 4.h),
+                    CustomTextWidget(
+                      data: 'Priority: ${task['priority'] ?? 'Low'}',
+                      color: _getPriorityColor(task['priority']),
+                      fontSize: 12,
                     ),
                   ],
                 ),
-
                 trailing: InkWell(
                   onTap: () {
                     final taskId = task['id'] as String;
                     final isComplete = task['isComplete'] ?? false;
-                    context.read<TaskCubit>().toggleTaskComplete(taskId, isComplete);
+                    context.read<TaskManageCubit>().toggleTaskComplete(
+                      taskId,
+                      isComplete,
+                    );
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(8.w),
                     child: Icon(
                       task['isComplete'] ?? false
                           ? Icons.check_circle
@@ -205,7 +202,7 @@ class TasksPage extends StatelessWidget {
                       color: task['isComplete'] ?? false
                           ? AppThemes.secondaryColor
                           : AppThemes.gray,
-                      size: 28,
+                      size: 28.sp,
                     ),
                   ),
                 ),
@@ -217,16 +214,21 @@ class TasksPage extends StatelessWidget {
     );
   }
 
-  Color _getPriorityColor(String? priority) {
+  Color _getPriorityColor(String str) {
+    Priority priority = str == "High"
+        ? Priority.high
+        : str == "Medium"
+        ? Priority.medium
+        : Priority.low;
     switch (priority) {
-      case 'High':
+      case Priority.high:
         return AppThemes.red;
-      case 'Medium':
+      case Priority.medium:
         return AppThemes.orange;
-      case 'Low':
+      case Priority.low:
         return AppThemes.secondaryColor;
-      default:
-        return AppThemes.gray;
     }
   }
 }
+
+enum Priority { high, medium, low }

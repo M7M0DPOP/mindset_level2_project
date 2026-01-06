@@ -23,7 +23,7 @@ Future<void> main() async {
   getIt.registerSingleton<UserRepoImpl>(UserRepoImpl());
   runApp(
     BlocProvider(
-      create: (context) => sl.getTaskCubit(),
+      create: (context) => sl.getTaskManageCubit(),
       child: ScreenUtilInit(
         designSize: const Size(390, 844),
         builder: (_, __) => MaterialApp(

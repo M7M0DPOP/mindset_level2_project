@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mindset_level2_project/features/task_management/data/datasources/task_remote_datasource.dart';
 import 'package:mindset_level2_project/features/task_management/data/repositories/task_repository_impl.dart';
@@ -7,15 +6,14 @@ import 'package:mindset_level2_project/features/task_management/domain/usecases/
 import 'package:mindset_level2_project/features/task_management/domain/usecases/delete_task.dart';
 import 'package:mindset_level2_project/features/task_management/domain/usecases/get_task.dart';
 import 'package:mindset_level2_project/features/task_management/domain/usecases/update_task.dart';
-import 'package:mindset_level2_project/features/task_management/presentation/cubit/task_cubit.dart';
-
+import 'package:mindset_level2_project/features/task_management/presentation/cubit/task_manage_cubit.dart';
 
 class InjectionContainer {
   static final InjectionContainer _instance = InjectionContainer._internal();
   factory InjectionContainer() => _instance;
   InjectionContainer._internal();
 
-  late TaskCubit taskCubit;
+  late TaskManageCubit taskCubit;
 
   Future<void> init() async {
     final firestore = FirebaseFirestore.instance;
@@ -26,7 +24,7 @@ class InjectionContainer {
     final UpdateTask updateTask = UpdateTask(repository);
     final DeleteTask deleteTask = DeleteTask(repository);
 
-    taskCubit = TaskCubit(
+    taskCubit = TaskManageCubit(
       getTasks: getTasks,
       addTask: addTask,
       updateTask: updateTask,
@@ -34,7 +32,7 @@ class InjectionContainer {
     );
   }
 
-  TaskCubit getTaskCubit() => taskCubit;
+  TaskManageCubit getTaskManageCubit() => taskCubit;
 }
 
 final sl = InjectionContainer();
