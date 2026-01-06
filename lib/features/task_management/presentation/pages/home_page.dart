@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindset_level2_project/core/app_themes.dart';
-import 'package:mindset_level2_project/features/authentication/presentation/pages/task%20_details_page.dart';
-
+import 'package:mindset_level2_project/features/task_management/presentation/pages/task%20_details_page.dart';
 import '../cubit/task_cubit.dart';
 import 'add_task_page.dart' as add_task_page;
 import 'profile_page.dart';

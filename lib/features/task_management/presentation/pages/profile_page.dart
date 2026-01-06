@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/features/authentication/data/repositories/user_repo_impl.dart';
 import 'package:mindset_level2_project/features/authentication/domain/entities/user_entity.dart';
 import '../../../../core/app_themes.dart';
-import 'login_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mindset_level2_project/main.dart';
 
