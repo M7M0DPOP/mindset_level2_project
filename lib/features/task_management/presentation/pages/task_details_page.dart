@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:mindset_level2_project/features/task_management/presentation/cubit/task_manage_cubit.dart';
 import '../../../../core/app_themes.dart';
-import '../cubit/task_cubit.dart';
 import 'add_task_page.dart' as add_task_page;
 
 class TaskDetailsPage extends StatelessWidget {
@@ -68,8 +68,10 @@ class TaskDetailsPage extends StatelessWidget {
                 ),
                 const Spacer(),
                 Icon(
-                  isComplete ? Icons.check_circle : Icons.radio_button_unchecked,
-                  color: isComplete ? AppThemes.secondaryColor : AppThemes.gray ,
+                  isComplete
+                      ? Icons.check_circle
+                      : Icons.radio_button_unchecked,
+                  color: isComplete ? AppThemes.secondaryColor : AppThemes.gray,
                   size: 28,
                 ),
               ],
@@ -99,10 +101,7 @@ class TaskDetailsPage extends StatelessWidget {
                 ),
                 Text(
                   formattedDate,
-                  style: TextStyle(
-                    color: AppThemes.lightGreen,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: AppThemes.lightGreen, fontSize: 16),
                 ),
               ],
             ),
@@ -159,13 +158,17 @@ class TaskDetailsPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => add_task_page.AddTask(task: task),
+                          builder: (context) =>
+                              add_task_page.AddTask(task: task),
                         ),
                       );
                     },
                     child: const Text(
                       'Edit',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -185,7 +188,10 @@ class TaskDetailsPage extends StatelessWidget {
                     },
                     child: const Text(
                       'Delete',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -223,25 +229,27 @@ class TaskDetailsPage extends StatelessWidget {
           ),
           content: Text(
             'Are you sure you want to delete this task?',
-            style: TextStyle(color: AppThemes.lightGreen,),
+            style: TextStyle(color: AppThemes.lightGreen),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: Text('Cancel', style: TextStyle(color: AppThemes.gray,)),
+              child: Text('Cancel', style: TextStyle(color: AppThemes.gray)),
             ),
             TextButton(
               onPressed: () async {
                 final taskId = task['id'] as String;
-                await context.read<TaskCubit>().removeTask(taskId);
-                Navigator.pop(dialogContext); // Close dialog
-                Navigator.pop(context); // Go back to home
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Task deleted successfully'),
-                    backgroundColor: AppThemes.thireedColor,
-                  ),
-                );
+                await context.read<TaskManageCubit>().removeTask(taskId);
+                if (context.mounted) {
+                  Navigator.pop(dialogContext); // Close dialog
+                  Navigator.pop(context); // Go back to home
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Task deleted successfully'),
+                      backgroundColor: AppThemes.thireedColor,
+                    ),
+                  );
+                }
               },
               child: Text('Delete', style: TextStyle(color: AppThemes.red)),
             ),

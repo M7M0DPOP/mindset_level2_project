@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mindset_level2_project/core/widgets/custom_text_form_field.dart';
-
+import 'package:mindset_level2_project/core/widgets/custom_text_widget.dart';
+import 'package:mindset_level2_project/features/task_management/presentation/cubit/task_manage_cubit.dart';
+import 'package:mindset_level2_project/features/task_management/presentation/widgets/priority_button.dart';
 import '../../../../core/app_themes.dart';
-import '../cubit/task_cubit.dart';
 
 class AddTask extends StatefulWidget {
   final Map<String, dynamic>? task;
@@ -25,8 +27,12 @@ class _AddTaskState extends State<AddTask> {
   void initState() {
     super.initState();
     if (isEditMode) {
-      titleController = TextEditingController(text: widget.task!['taskTitle'] ?? '');
-      descriptionController = TextEditingController(text: widget.task!['description'] ?? '');
+      titleController = TextEditingController(
+        text: widget.task!['taskTitle'] ?? '',
+      );
+      descriptionController = TextEditingController(
+        text: widget.task!['description'] ?? '',
+      );
       selectedPriority = widget.task!['priority'] ?? 'Low';
 
       final dueDate = widget.task!['dueDate'];
@@ -48,6 +54,13 @@ class _AddTaskState extends State<AddTask> {
   }
 
   @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppThemes.primaryColor,
@@ -66,19 +79,17 @@ class _AddTaskState extends State<AddTask> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(8.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Task Title",
-              style: TextStyle(
-                color: AppThemes.textColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            CustomTextWidget(
+              data: "Task Title",
+              color: AppThemes.textColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             CustomTextFormField(
               controller: titleController,
               hintText: "Task Title",
@@ -89,16 +100,14 @@ class _AddTaskState extends State<AddTask> {
                 return null;
               },
             ),
-            const SizedBox(height: 10),
-            Text(
-              "Description",
-              style: TextStyle(
-                color: AppThemes.textColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            SizedBox(height: 10.h),
+            CustomTextWidget(
+              data: "Description",
+              color: AppThemes.textColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             CustomTextFormField(
               controller: descriptionController,
               hintText: "Description",
@@ -111,22 +120,24 @@ class _AddTaskState extends State<AddTask> {
                 return null;
               },
             ),
-            const SizedBox(height: 10),
-            Text(
-              "Due Date",
-              style: TextStyle(
-                color: AppThemes.textColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            SizedBox(height: 10.h),
+            CustomTextWidget(
+              data: "Due Date",
+              color: AppThemes.textColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             GestureDetector(
               onTap: () async {
                 final DateTime? picked = await showDatePicker(
                   context: context,
                   initialDate: selectedDate ?? DateTime.now(),
-                  firstDate: DateTime(2020),
+                  firstDate: DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                  ),
                   lastDate: DateTime(2030),
                   builder: (context, child) {
                     return Theme(
@@ -149,20 +160,23 @@ class _AddTaskState extends State<AddTask> {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
                   color: AppThemes.thireedColor,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppThemes.secondaryColor.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: AppThemes.secondaryColor.withOpacity(0.3),
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      selectedDate != null
+                    CustomTextWidget(
+                      data: selectedDate != null
                           ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
                           : 'Select Date',
-                      style: TextStyle(color: AppThemes.textColor, fontSize: 16),
+                      color: AppThemes.textColor,
+                      fontSize: 16,
                     ),
                     Icon(Icons.calendar_today, color: AppThemes.secondaryColor),
                   ],
@@ -170,29 +184,36 @@ class _AddTaskState extends State<AddTask> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
-            Text(
-              "Priority",
-              style: TextStyle(
-                color: AppThemes.textColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            CustomTextWidget(
+              data: "Priority",
+              color: AppThemes.textColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-
-            const SizedBox(height: 20),
-
+            SizedBox(height: 20.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _priorityButton('Low'),
-                _priorityButton('Medium'),
-                _priorityButton('High'),
+                PriorityButton(
+                  priorityLabel: 'Low',
+                  isSelected: selectedPriority == 'Low',
+                  onTap: () => setState(() => selectedPriority = 'Low'),
+                ),
+                PriorityButton(
+                  priorityLabel: 'Medium',
+                  isSelected: selectedPriority == 'Medium',
+                  onTap: () => setState(() => selectedPriority = 'Medium'),
+                ),
+                PriorityButton(
+                  priorityLabel: 'High',
+                  isSelected: selectedPriority == 'High',
+                  onTap: () => setState(() => selectedPriority = 'High'),
+                ),
               ],
             ),
-
-            const SizedBox(height: 30),
+            SizedBox(height: 30.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -201,72 +222,81 @@ class _AddTaskState extends State<AddTask> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppThemes.thireedColor,
                       foregroundColor: AppThemes.textColor,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Cancel', style: TextStyle(fontSize: 16)),
+                    child: CustomTextWidget(data: 'Cancel', fontSize: 16),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppThemes.secondaryColor,
                       foregroundColor: AppThemes.textColor,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     onPressed: () async {
-                      if (titleController.text.isEmpty || descriptionController.text.isEmpty) {
+                      if (titleController.text.isEmpty ||
+                          descriptionController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: Text('Please fill all fields'),
                             backgroundColor: AppThemes.red,
                           ),
                         );
                         return;
                       }
-
                       final taskData = {
                         'taskTitle': titleController.text,
                         'description': descriptionController.text,
                         'priority': selectedPriority,
                         'dueDate': selectedDate ?? DateTime.now(),
                       };
-
                       if (isEditMode) {
                         final taskId = widget.task!['id'] as String;
-                        await context.read<TaskCubit>().updateTaskData(taskId, taskData);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(
-                            content: Text('Task updated successfully '),
-                            backgroundColor: AppThemes.secondaryColor,
-                          ),
+                        await context.read<TaskManageCubit>().updateTaskData(
+                          taskId,
+                          taskData,
                         );
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Task updated successfully '),
+                              backgroundColor: AppThemes.secondaryColor,
+                            ),
+                          );
+                        }
                       } else {
                         taskData['isComplete'] = false;
-                        await context.read<TaskCubit>().addNewTask(taskData);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Task added successfully '),
-                            backgroundColor: AppThemes.secondaryColor,
-                          ),
+                        await context.read<TaskManageCubit>().addNewTask(
+                          taskData,
                         );
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Task added successfully '),
+                              backgroundColor: AppThemes.secondaryColor,
+                            ),
+                          );
+                        }
                       }
                     },
-                    child: Text(
-                      isEditMode ? 'Save Changes' : 'Save',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    child: CustomTextWidget(
+                      data: isEditMode ? 'Save Changes' : 'Save',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -276,34 +306,5 @@ class _AddTaskState extends State<AddTask> {
         ),
       ),
     );
-  }
-
-  Widget _priorityButton(String priority) {
-    final bool isSelected = selectedPriority == priority;
-
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor:
-        isSelected ? AppThemes.secondaryColor : AppThemes.thireedColor,
-        foregroundColor: AppThemes.textColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      ),
-      onPressed: () {
-        setState(() {
-          selectedPriority = priority;
-        });
-      },
-      child: Text(priority),
-    );
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
-    super.dispose();
   }
 }
